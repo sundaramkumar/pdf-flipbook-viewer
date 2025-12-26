@@ -1,6 +1,8 @@
 # PDF Flipbook Viewer
 
-An interactive PDF viewer with realistic page-turning effects, built with PDF.js and Turn.js. Features a modern dark theme, thumbnail navigation, zoom controls, and responsive design.
+An interactive PDF viewer with realistic page-turning effects, built with PDF.js and Turn.js. 
+Features a modern dark theme, thumbnail navigation, zoom controls, and responsive design.
+Uses HTML, JS, CSS ad modern js libraries
 
 ## Features
 
