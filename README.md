@@ -26,7 +26,6 @@ An interactive PDF viewer with realistic page-turning effects, built with PDF.js
 1. Open `index.html` in your web browser
 2. Select a PDF from the dropdown menu
 3. Use mouse clicks, thumbnails, or keyboard shortcuts to navigate
-4. Use zoom controls for better readability
 
 
 ## Technologies Used
