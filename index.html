@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Kumar Sundaram">
+    <meta name="email" content="guyfromchennai[at]gmail[dot]com">
+    <meta name="keywords" content="PDF, Flipbook, Viewer, JavaScript, PDF.js, Turn.js, Interactive, Web App">
+    <meta name="description" content="Interactive PDF Flipbook Viewer - Experience PDFs with realistic page-turning effects">
+    <title>PDF Flipbook Viewer</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    PDF Flipbook Viewer
+                </h1>
+                <div class="selector-wrapper">
+                    <label for="pdf-selector" class="selector-label">Select PDF:</label>
+                    <select id="pdf-selector" class="pdf-selector">
+                        <option value="">Choose a PDF...</option>
+                        <option value="sample-pdfs/September 2025.pdf">September 2025</option>
+                        <option value="sample-pdfs/October 2025.pdf">October 2025</option>
+                    </select>
+                </div>
+
+                <!-- Zoom Controls -->
+                <!-- zoom not working properly. TODO: Need to fix -->
+                <!-- <div class="zoom-controls" id="zoom-controls">
+                    <button id="zoom-out-btn" class="zoom-btn" aria-label="Zoom out" title="Zoom out">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                            <line x1="8" y1="11" x2="14" y2="11"></line>
+                        </svg>
+                    </button>
+                    <span class="zoom-level" id="zoom-level">100%</span>
+                    <button id="zoom-in-btn" class="zoom-btn" aria-label="Zoom in" title="Zoom in">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                            <line x1="11" y1="8" x2="11" y2="14"></line>
+                            <line x1="8" y1="11" x2="14" y2="11"></line>
+                        </svg>
+                    </button>
+                    <button id="zoom-fit-btn" class="zoom-btn" aria-label="Fit to screen" title="Fit to screen">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                        </svg>
+                    </button>
+                </div> -->
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Loading State -->
+            <div id="loading-state" class="loading-state">
+                <div class="spinner"></div>
+                <p class="loading-text">Loading PDF...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state">
+                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+                <h2 class="empty-title">No PDF Selected</h2>
+                <p class="empty-description">Select a PDF from the dropdown above to start viewing</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="error-state">
+                <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <h2 class="error-title">Failed to Load PDF</h2>
+                <p class="error-description">Please check if the file exists and try again</p>
+            </div>
+
+            <!-- Flipbook Container -->
+            <div id="flipbook-container" class="flipbook-container">
+                <div id="flipbook" class="flipbook"></div>
+            </div>
+
+            <!-- Controls -->
+            <div id="controls" class="controls">
+                <button id="prev-btn" class="control-btn" aria-label="Previous page">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    <span>Previous</span>
+                </button>
+
+                <div class="page-info">
+                    <span id="current-page">1</span>
+                    <span class="page-separator">/</span>
+                    <span id="total-pages">0</span>
+                </div>
+
+                <button id="next-btn" class="control-btn" aria-label="Next page">
+                    <span>Next</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </main>
+
+        <!-- Thumbnail Drawer -->
+        <div class="thumbnail-drawer" id="thumbnail-drawer">
+            <div class="thumbnail-drawer-handle" id="thumbnail-handle">
+                <svg class="drawer-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+                <span class="drawer-text">Thumbnails</span>
+            </div>
+            <div class="thumbnail-container" id="thumbnail-container">
+                <!-- Thumbnails will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
